@@ -6,10 +6,12 @@ import com.ws.vegetablews.dblayer.Vegetable;
 import com.ws.vegetablews.dblayer.VegetableAO;
 import org.springframework.stereotype.Service;
 
-@Service
-public class AddVegetablePrice extends SharedDataService implements Task {
+import java.util.Optional;
 
-    public AddVegetablePrice(LogsMgr logsMgr, VegetableAO vegetableAO) {
+@Service
+public class DeleteVegetablePrice extends SharedDataService implements Task {
+
+    public DeleteVegetablePrice(LogsMgr logsMgr, VegetableAO vegetableAO) {
         super(logsMgr, vegetableAO);
     }
 
@@ -17,15 +19,23 @@ public class AddVegetablePrice extends SharedDataService implements Task {
     public RequestResponse execute(String trackingId, Vegetable vegetable, String vegetableId) {
         RequestResponse requestResponse = new RequestResponse(GlobalVariables.ERROR_CODE_500, GlobalVariables.ERROR);
         try {
-            Vegetable newVegetable = new Vegetable(vegetable.getName(), vegetable.getPrice());
-            newVegetable.setCreated(getDateFromLocalDateTimeNow());
-            newVegetable.setLastUpdate(getDateFromLocalDateTimeNow());
-            alterVegetable(trackingId, newVegetable, requestResponse);
+
+            Optional<Vegetable> vegetableOptional = vegetableAO.getVegetableByID(vegetableId);
+            if(vegetableOptional.isPresent()){
+                vegetableAO.remove(vegetableOptional.get());
+                requestResponse = getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200,GlobalVariables.SUCCESS, vegetableOptional.get());
+
+            }
+            else{
+                requestResponse = getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_404, GlobalVariables.NOT_FOUND, vegetableId);
+            }
 
         }catch (Exception e){
             requestResponse.setMessage(e.getMessage());
             logger.error(logsMgr.addlogger(trackingId, GlobalVariables.ERROR_CODE_500,GlobalVariables.REQUEST,logsMgr.errorMessage(e)));
+
         }
+
         return requestResponse;
     }
 

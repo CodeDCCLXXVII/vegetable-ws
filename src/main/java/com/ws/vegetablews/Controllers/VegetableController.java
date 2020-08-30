@@ -43,7 +43,7 @@ public class VegetableController {
     public Object addVegetable(@Valid @RequestBody Vegetable vegetable, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return sharedDataControllers.getErrors(bindingResult.getAllErrors());
-        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.ADD_VEG_TASK, vegetable);
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.ADD_VEG_TASK, vegetable, null);
     }
 
     @ApiOperation(value = "Update an existing Vegetable", response = Vegetable.class)
@@ -52,7 +52,7 @@ public class VegetableController {
                                  @Valid @RequestBody Vegetable vegetable, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return sharedDataControllers.getErrors(bindingResult.getAllErrors());
-        return vegetableComputeEngine.updateVegetablePrice(new Config().getTracking(), vegetable, vegetableId);
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.UPDATE_VEG_TASK, vegetable, vegetableId);
     }
 
     @ApiOperation(value = "Delete an existing Vegetable", response = Vegetable.class)

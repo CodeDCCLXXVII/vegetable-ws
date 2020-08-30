@@ -7,9 +7,9 @@ import com.ws.vegetablews.dblayer.VegetableAO;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AddVegetablePrice extends SharedDataService implements Task {
+public class CalculateCost extends SharedDataService implements Task {
 
-    public AddVegetablePrice(LogsMgr logsMgr, VegetableAO vegetableAO) {
+    public CalculateCost(LogsMgr logsMgr, VegetableAO vegetableAO) {
         super(logsMgr, vegetableAO);
     }
 
@@ -17,10 +17,7 @@ public class AddVegetablePrice extends SharedDataService implements Task {
     public RequestResponse execute(String trackingId, Vegetable vegetable, String vegetableId) {
         RequestResponse requestResponse = new RequestResponse(GlobalVariables.ERROR_CODE_500, GlobalVariables.ERROR);
         try {
-            Vegetable newVegetable = new Vegetable(vegetable.getName(), vegetable.getPrice());
-            newVegetable.setCreated(getDateFromLocalDateTimeNow());
-            newVegetable.setLastUpdate(getDateFromLocalDateTimeNow());
-            alterVegetable(trackingId, newVegetable, requestResponse);
+
 
         }catch (Exception e){
             requestResponse.setMessage(e.getMessage());

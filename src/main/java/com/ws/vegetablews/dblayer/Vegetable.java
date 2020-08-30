@@ -1,6 +1,7 @@
 package com.ws.vegetablews.dblayer;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -8,7 +9,7 @@ import java.util.Date;
 /**
  * @author dcclxxvii
  */
-
+@Document(collection="vegetables")
 public class Vegetable  {
     @Id
     private String id;
