@@ -4,6 +4,8 @@ package com.ws.vegetablews.services;
 
 import com.ws.vegetablews.config.GlobalVariables;
 import com.ws.vegetablews.config.LogsMgr;
+import com.ws.vegetablews.dblayer.Vegetable;
+import com.ws.vegetablews.dblayer.VegetableAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 import java.util.TimeZone;
 
 /**
@@ -23,9 +26,16 @@ import java.util.TimeZone;
 @Service
 public class SharedDataService {
 
+    protected final LogsMgr logsMgr;
+    protected final Logger logger = LoggerFactory.getLogger(SharedDataService.class);
+    protected final
+    VegetableAO vegetableAO;
+
     @Autowired
-    private LogsMgr logsMgr;
-    private final Logger logger = LoggerFactory.getLogger(SharedDataService.class);
+    public SharedDataService(LogsMgr logsMgr, VegetableAO vegetableAO) {
+        this.logsMgr = logsMgr;
+        this.vegetableAO = vegetableAO;
+    }
 
     /**
      *
@@ -47,31 +57,20 @@ public class SharedDataService {
         return  Date.from(localDateTime.atZone(TimeZone.getTimeZone(GlobalVariables.NAIROBI).toZoneId()).toInstant());
     }
 
-    public Date getDateFromLocalDateTimeNow(int lessMonths){
-        LocalDateTime localDateTime =LocalDateTime.now();
-        ZoneId zoneId = ZoneId.of(GlobalVariables.NAIROBI);
-        ZoneOffset zoneOffset = zoneId.getRules().getOffset(localDateTime);
-        LocalDateTime less = LocalDateTime.from(localDateTime.toInstant(zoneOffset)).minusMonths(lessMonths);
-        return  Date.from(less.atZone(TimeZone.getTimeZone(GlobalVariables.NAIROBI).toZoneId()).toInstant());
-    }
+    public RequestResponse alterVegetable(String trackingId, Vegetable vegetable, RequestResponse requestResponse){
+        try {
+            Optional<Vegetable> checkVegetable = vegetableAO.getVegetables(vegetable.getName());
+            if(checkVegetable.isPresent()){
+                requestResponse = getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_500, GlobalVariables.EXISTS, vegetable);
+            }else{
+                if(vegetableAO.add(vegetable) != null)
+                    requestResponse = getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200, GlobalVariables.SUCCESS, vegetable);
+            }
 
-    public Date getLessMonths(int lessMonths){
-        Date now = new Date();
-        Calendar c = Calendar.getInstance();
-        c.setTime(now);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-        c.add(Calendar.MONTH, -lessMonths);
-        return c.getTime();
-    }
-
-    public Date getParseDate(String dateStr, String format){
-        try{
-            return  new SimpleDateFormat(format).parse(dateStr);
-        } catch(Exception e){
-            logger.error(logsMgr.addlogger("", GlobalVariables.ERROR_CODE_500,GlobalVariables.REQUEST_FOR_SESSION_RESULT,logsMgr.errorMessage(e)));
+        }catch (Exception e){
+            requestResponse.setMessage(e.getMessage());
+            logger.error(logsMgr.addlogger(trackingId, GlobalVariables.ERROR_CODE_500,GlobalVariables.REQUEST,logsMgr.errorMessage(e)));
         }
-
-        return  null;
+        return requestResponse;
     }
 }

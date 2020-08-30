@@ -2,6 +2,7 @@ package com.ws.vegetablews.Controllers;
 
 
 import com.ws.vegetablews.config.Config;
+import com.ws.vegetablews.config.GlobalVariables;
 import com.ws.vegetablews.dblayer.Vegetable;
 import com.ws.vegetablews.services.VegetableComputeEngine;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +43,7 @@ public class VegetableController {
     public Object addVegetable(@Valid @RequestBody Vegetable vegetable, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return sharedDataControllers.getErrors(bindingResult.getAllErrors());
-        return vegetableComputeEngine.addVegetablePrice(new Config().getTracking(), vegetable);
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.ADD_VEG_TASK, vegetable);
     }
 
     @ApiOperation(value = "Update an existing Vegetable", response = Vegetable.class)

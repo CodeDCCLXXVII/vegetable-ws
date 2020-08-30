@@ -4,5 +4,5 @@ import com.ws.vegetablews.dblayer.Vegetable;
 
 public interface Task {
 
-    public Vegetable execute(Vegetable vegetable);
+    public RequestResponse execute(String trackingId, Vegetable vegetable);
 }

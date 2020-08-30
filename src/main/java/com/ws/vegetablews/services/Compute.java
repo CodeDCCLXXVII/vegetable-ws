@@ -4,7 +4,7 @@ import com.ws.vegetablews.dblayer.Vegetable;
 
 public interface Compute {
 
-    public RequestResponse addVegetablePrice(String trackingId, Vegetable vegetable);
+    public RequestResponse excuteTask(String trackingId, String taskType, Vegetable vegetable);
     public RequestResponse updateVegetablePrice(String trackingId, Vegetable vegetable,
                                                 String vegetableId);
     public RequestResponse deleteVegetablePrice(String trackingId, String vegetableId);

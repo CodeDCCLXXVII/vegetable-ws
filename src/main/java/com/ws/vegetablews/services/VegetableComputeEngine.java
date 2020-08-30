@@ -24,23 +24,32 @@ public class VegetableComputeEngine  implements Compute{
     private Logger logger = LoggerFactory.getLogger(VegetableComputeEngine.class);
     private final VegetableAO vegetableAO;
     private final SharedDataService sharedDataService;
+    private final AddVegetablePrice vegetablePrice;
 
     @Autowired
-    public VegetableComputeEngine(LogsMgr logsMgr, VegetableAO vegetableAO, SharedDataService sharedDataService) {
+    public VegetableComputeEngine(LogsMgr logsMgr, VegetableAO vegetableAO, SharedDataService sharedDataService, AddVegetablePrice vegetablePrice) {
         this.logsMgr = logsMgr;
         this.vegetableAO = vegetableAO;
         this.sharedDataService = sharedDataService;
+        this.vegetablePrice = vegetablePrice;
     }
 
-
     @Override
-    public RequestResponse addVegetablePrice(String trackingId, Vegetable vegetable) {
+    public RequestResponse excuteTask(String trackingId, String taskType, Vegetable vegetable) {
         RequestResponse requestResponse = new RequestResponse(GlobalVariables.ERROR_CODE_500, GlobalVariables.ERROR);
-        try {
-            Vegetable newVegetable = new Vegetable(vegetable.getName(), vegetable.getPrice());
-            newVegetable.setCreated(sharedDataService.getDateFromLocalDateTimeNow());
-            newVegetable.setLastUpdate(sharedDataService.getDateFromLocalDateTimeNow());
-            alterVegetable(trackingId, newVegetable, requestResponse);
+        try{
+            if(taskType != null){
+                taskType = taskType.toUpperCase();
+                switch (taskType){
+                    case GlobalVariables.ADD_VEG_TASK:
+                        requestResponse = vegetablePrice.execute(trackingId, vegetable);
+                        break;
+                    case GlobalVariables.UPDATE_VEG_TASK:
+                        break;
+                        default:
+                            requestResponse.setMessage(GlobalVariables.TASK_ERROR);
+                }
+            }
 
         }catch (Exception e){
             requestResponse.setMessage(e.getMessage());
@@ -59,7 +68,7 @@ public class VegetableComputeEngine  implements Compute{
                 updateVegetable.setName(vegetable.getName());
                 updateVegetable.setPrice(vegetable.getPrice());
                 updateVegetable.setLastUpdate(sharedDataService.getDateFromLocalDateTimeNow());
-                requestResponse = alterVegetable(trackingId, updateVegetable, requestResponse);
+                requestResponse = sharedDataService.alterVegetable(trackingId, updateVegetable, requestResponse);
             }else
                 requestResponse = sharedDataService.getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_404,GlobalVariables.NOT_FOUND, vegetable);
 
@@ -110,7 +119,7 @@ public class VegetableComputeEngine  implements Compute{
         try {
             Page<Vegetable> vegetables = vegetableAO.getVegetables(page, size);
             if(!vegetables.isEmpty()){
-                requestResponse = sharedDataService.getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200,GlobalVariables.SUCCESS, vegetables);
+                requestResponse = sharedDataService.getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200,GlobalVariables.SUCCESS, vegetables.getContent());
             }else{
                 requestResponse = sharedDataService.getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_404, GlobalVariables.NOT_FOUND, null);
             }
@@ -121,20 +130,5 @@ public class VegetableComputeEngine  implements Compute{
         return requestResponse;
     }
 
-    private RequestResponse alterVegetable(String trackingId, Vegetable vegetable, RequestResponse requestResponse){
-        try {
-            Optional<Vegetable> checkVegetable = vegetableAO.getVegetables(vegetable.getName());
-            if(checkVegetable.isPresent()){
-                requestResponse = sharedDataService.getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_500, GlobalVariables.EXISTS, vegetable);
-            }else{
-                if(vegetableAO.add(vegetable) != null)
-                    requestResponse = sharedDataService.getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200, GlobalVariables.SUCCESS, vegetable);
-            }
 
-        }catch (Exception e){
-            requestResponse.setMessage(e.getMessage());
-            logger.error(logsMgr.addlogger(trackingId, GlobalVariables.ERROR_CODE_500,GlobalVariables.REQUEST,logsMgr.errorMessage(e)));
-        }
-        return requestResponse;
-    }
 }
