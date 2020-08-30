@@ -15,10 +15,6 @@ public class UpdateVegetablePrice extends SharedDataService implements Task {
         super(logsMgr, vegetableAO);
     }
 
-    @Override
-    public RequestResponse execute(String trackingId, Vegetable vegetable) {
-        return null;
-    }
 
     @Override
     public RequestResponse execute(String trackingId, Vegetable vegetable, String vegetableId) {

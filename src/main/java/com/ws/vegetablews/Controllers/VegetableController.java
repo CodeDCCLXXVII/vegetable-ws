@@ -35,7 +35,14 @@ public class VegetableController {
     @GetMapping(value = "/getall/{page}/{size}")
     public Object getAllVegetables(@NotNull(message = "Page number required") @PathVariable int page,
                          @NotNull(message = "Page size required") @PathVariable int size){
-        return vegetableComputeEngine.getAllVegetables(new Config().getTracking(), page, size);
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.GET_LIST_VEG_TASK, null, page, size);
+    }
+
+
+    @ApiOperation(value = "Search a vegetable", response = Vegetable.class)
+    @GetMapping(value = "/getall/{searchTerm}")
+    public Object getVegetable(@NotNull(message = "Vegetable name required") @PathVariable String searchTerm){
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.SEARCH_VEG_TASK, searchTerm, 0, 0);
     }
 
     @ApiOperation(value = "Add a new Vegetable", response = Vegetable.class)
@@ -58,6 +65,6 @@ public class VegetableController {
     @ApiOperation(value = "Delete an existing Vegetable", response = Vegetable.class)
     @DeleteMapping(value = "/deleteVegetable/{vegetableId}")
     public Object deleteVegetable(@Valid @NotNull(message = "VegetableId is required") @PathVariable String vegetableId){
-        return vegetableComputeEngine.deleteVegetablePrice(new Config().getTracking(), vegetableId);
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.DELETE_VEG_TASK, null, vegetableId);
     }
 }
