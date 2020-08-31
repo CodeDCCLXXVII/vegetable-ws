@@ -6,6 +6,7 @@ import com.ws.vegetablews.dblayer.Vegetable;
 import com.ws.vegetablews.dblayer.VegetableAO;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,7 +27,14 @@ public class UpdateVegetablePrice extends SharedDataService implements Task {
                 updateVegetable.setName(vegetable.getName());
                 updateVegetable.setPrice(vegetable.getPrice());
                 updateVegetable.setLastUpdate(getDateFromLocalDateTimeNow());
-                requestResponse = alterVegetable(trackingId, updateVegetable, requestResponse);
+
+                List<Vegetable> checkVegetables = vegetableAO.getVegetablesList(updateVegetable.getName());
+                if(checkVegetables.size() > 1){
+                    requestResponse = getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_500, GlobalVariables.EXISTS, vegetable);
+                }else{
+                    if(vegetableAO.update(updateVegetable) != null)
+                        requestResponse = getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200, GlobalVariables.SUCCESS, updateVegetable);
+                }
             }else
                 requestResponse = getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_404,GlobalVariables.NOT_FOUND, vegetable);
 

@@ -21,14 +21,16 @@ public class VegetableComputeEngine  implements Compute{
     private final UpdateVegetablePrice updateVegetablePrice;
     private final FetchVegetablePrices fetchVegetablePrices;
     private final SearchVegetablePrice searchVegetablePrice;
+    private final DeleteVegetablePrice deleteVegetablePrice;
 
     @Autowired
-    public VegetableComputeEngine(LogsMgr logsMgr, AddVegetablePrice vegetablePrice, UpdateVegetablePrice updateVegetablePrice, FetchVegetablePrices fetchVegetablePrices, SearchVegetablePrice searchVegetablePrice) {
+    public VegetableComputeEngine(LogsMgr logsMgr, AddVegetablePrice vegetablePrice, UpdateVegetablePrice updateVegetablePrice, FetchVegetablePrices fetchVegetablePrices, SearchVegetablePrice searchVegetablePrice, DeleteVegetablePrice deleteVegetablePrice) {
         this.logsMgr = logsMgr;
         this.vegetablePrice = vegetablePrice;
         this.updateVegetablePrice = updateVegetablePrice;
         this.fetchVegetablePrices = fetchVegetablePrices;
         this.searchVegetablePrice = searchVegetablePrice;
+        this.deleteVegetablePrice = deleteVegetablePrice;
     }
 
     @Override
@@ -43,6 +45,9 @@ public class VegetableComputeEngine  implements Compute{
                         break;
                     case GlobalVariables.UPDATE_VEG_TASK:
                         requestResponse = updateVegetablePrice.execute(trackingId, vegetable, vegetableId);
+                        break;
+                    case GlobalVariables.DELETE_VEG_TASK:
+                        requestResponse = deleteVegetablePrice.execute(trackingId, null, vegetableId);
                         break;
                         default:
                             requestResponse.setMessage(GlobalVariables.TASK_ERROR);

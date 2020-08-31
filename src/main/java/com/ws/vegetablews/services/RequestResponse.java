@@ -9,7 +9,7 @@ public class RequestResponse {
     private String message;
     private Object metadata;
 
-    public RequestResponse(){};
+    public RequestResponse(){}
     public RequestResponse(int code, String message){
         this.code = code;
         this.message = message;

@@ -4,20 +4,13 @@ package com.ws.vegetablews.services;
 
 import com.ws.vegetablews.config.GlobalVariables;
 import com.ws.vegetablews.config.LogsMgr;
-import com.ws.vegetablews.dblayer.Vegetable;
 import com.ws.vegetablews.dblayer.VegetableAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Optional;
 import java.util.TimeZone;
 
 /**
@@ -55,22 +48,5 @@ public class SharedDataService {
     public Date getDateFromLocalDateTimeNow(){
         LocalDateTime localDateTime =LocalDateTime.now(TimeZone.getTimeZone(GlobalVariables.NAIROBI).toZoneId());
         return  Date.from(localDateTime.atZone(TimeZone.getTimeZone(GlobalVariables.NAIROBI).toZoneId()).toInstant());
-    }
-
-    public RequestResponse alterVegetable(String trackingId, Vegetable vegetable, RequestResponse requestResponse){
-        try {
-            Optional<Vegetable> checkVegetable = vegetableAO.getVegetables(vegetable.getName());
-            if(checkVegetable.isPresent()){
-                requestResponse = getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_500, GlobalVariables.EXISTS, vegetable);
-            }else{
-                if(vegetableAO.add(vegetable) != null)
-                    requestResponse = getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200, GlobalVariables.SUCCESS, vegetable);
-            }
-
-        }catch (Exception e){
-            requestResponse.setMessage(e.getMessage());
-            logger.error(logsMgr.addlogger(trackingId, GlobalVariables.ERROR_CODE_500,GlobalVariables.REQUEST,logsMgr.errorMessage(e)));
-        }
-        return requestResponse;
     }
 }

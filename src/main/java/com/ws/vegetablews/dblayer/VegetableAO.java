@@ -41,6 +41,10 @@ public class VegetableAO  implements RepoInterface{
         return vegetableRepo.findByName(vName);
     }
 
+    public List<Vegetable> getVegetablesList(String vName){
+        return vegetableRepo.findListByName(vName);
+    }
+
     public Optional<Vegetable> getVegetableByID(String id){
         return vegetableRepo.findById(id);
     }

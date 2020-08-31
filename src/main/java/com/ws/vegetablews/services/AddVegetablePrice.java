@@ -6,6 +6,8 @@ import com.ws.vegetablews.dblayer.Vegetable;
 import com.ws.vegetablews.dblayer.VegetableAO;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AddVegetablePrice extends SharedDataService implements Task {
 
@@ -20,7 +22,14 @@ public class AddVegetablePrice extends SharedDataService implements Task {
             Vegetable newVegetable = new Vegetable(vegetable.getName(), vegetable.getPrice());
             newVegetable.setCreated(getDateFromLocalDateTimeNow());
             newVegetable.setLastUpdate(getDateFromLocalDateTimeNow());
-            alterVegetable(trackingId, newVegetable, requestResponse);
+
+            Optional<Vegetable> checkVegetable = vegetableAO.getVegetables(newVegetable.getName());
+            if(checkVegetable.isPresent()){
+                requestResponse = getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_500, GlobalVariables.EXISTS, vegetable);
+            }else{
+                if(vegetableAO.add(newVegetable) != null)
+                    requestResponse = getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200, GlobalVariables.SUCCESS, newVegetable);
+            }
 
         }catch (Exception e){
             requestResponse.setMessage(e.getMessage());
