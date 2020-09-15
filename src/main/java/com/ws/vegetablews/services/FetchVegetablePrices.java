@@ -25,7 +25,7 @@ public class FetchVegetablePrices extends SharedDataService implements Task {
         try {
             Page<Vegetable> vegetables = vegetableAO.getVegetables(page, size);
             if(!vegetables.isEmpty()){
-                requestResponse = getRequestResponse(requestResponse, GlobalVariables.SUCCESS_CODE_200,GlobalVariables.SUCCESS, vegetables.getContent());
+                requestResponse = getRequestResponse(requestResponse, vegetables.getContent());
             }else{
                 requestResponse = getRequestResponse(requestResponse, GlobalVariables.ERROR_CODE_404, GlobalVariables.NOT_FOUND, null);
             }

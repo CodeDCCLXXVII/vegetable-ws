@@ -14,7 +14,7 @@ import java.util.UUID;
 @Service
 public class LogsMgr {
 
-    public String addlogger(String requestId, int responseCode,String message,String logDetailedMessage){
+    public String addlogger(String requestId, String responseCode,String message,String logDetailedMessage){
         StringBuilder sb=new StringBuilder();
         sb
                 .append(message)

@@ -38,12 +38,19 @@ public class SharedDataService {
      * @param object
      * @return
      */
-    public RequestResponse getRequestResponse(RequestResponse requestResponse, int code, String message, Object object){
+    public RequestResponse getRequestResponse(RequestResponse requestResponse, String code, String message, Object object){
         requestResponse.setCode(code);
         requestResponse.setMessage(message);
         requestResponse.setMetadata(object);
         return requestResponse;
     }
+    public RequestResponse getRequestResponse(RequestResponse requestResponse, Object object){
+        requestResponse.setCode(null);
+        requestResponse.setMessage(null);
+        requestResponse.setMetadata(object);
+        return requestResponse;
+    }
+
 
     public Date getDateFromLocalDateTimeNow(){
         LocalDateTime localDateTime =LocalDateTime.now(TimeZone.getTimeZone(GlobalVariables.NAIROBI).toZoneId());

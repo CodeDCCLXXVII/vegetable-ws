@@ -21,10 +21,10 @@ public class GlobalVariables {
     private GlobalVariables() {
     }
     public static final int SUCCESS_CODE_00 = 0;
-    public static final int SUCCESS_CODE_200 = 200;
-    public static final int ERROR_CODE_99 = 99;
-    public static final int ERROR_CODE_500 = 500;
-    public static final  int ERROR_CODE_404 = 404;
+    public static final String SUCCESS_CODE_200 = "200";
+    public static final String ERROR_CODE_99 = "99";
+    public static final String ERROR_CODE_500 = "500";
+    public static final  String ERROR_CODE_404 = "404";
     public static String TRACKING_ID = "transactionId";
     public static final String NOT_FOUND = "Record not found";
     public static final String ERROR="error";
