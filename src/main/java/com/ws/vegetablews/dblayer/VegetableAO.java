@@ -49,8 +49,9 @@ public class VegetableAO  implements RepoInterface{
         return vegetableRepo.findById(id);
     }
 
-    public void remove(@NotNull Vegetable vegetable){
-        vegetableRepo.delete(vegetable);
+    @Override
+    public void remove(@NotNull Object vegetable){
+        vegetableRepo.delete((Vegetable) vegetable);
     }
 
 

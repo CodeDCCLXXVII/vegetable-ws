@@ -2,6 +2,7 @@ package com.ws.vegetablews.services;
 
 import com.ws.vegetablews.config.GlobalVariables;
 import com.ws.vegetablews.config.LogsMgr;
+import com.ws.vegetablews.dblayer.TransactionAO;
 import com.ws.vegetablews.dblayer.Vegetable;
 import com.ws.vegetablews.dblayer.VegetableAO;
 import org.springframework.stereotype.Service;
@@ -11,15 +12,14 @@ import java.util.Optional;
 @Service
 public class DeleteVegetablePrice extends SharedDataService implements Task {
 
-    public DeleteVegetablePrice(LogsMgr logsMgr, VegetableAO vegetableAO) {
-        super(logsMgr, vegetableAO);
+    public DeleteVegetablePrice(LogsMgr logsMgr, VegetableAO vegetableAO, TransactionAO transactionAO) {
+        super(logsMgr, vegetableAO, transactionAO);
     }
 
     @Override
-    public RequestResponse execute(String trackingId, Vegetable vegetable, String vegetableId) {
+    public RequestResponse execute(String trackingId, TaskRequest taskRequest, String vegetableId) {
         RequestResponse requestResponse = new RequestResponse(GlobalVariables.ERROR_CODE_500, GlobalVariables.ERROR);
         try {
-
             Optional<Vegetable> vegetableOptional = vegetableAO.getVegetableByID(vegetableId);
             if(vegetableOptional.isPresent()){
                 vegetableAO.remove(vegetableOptional.get());

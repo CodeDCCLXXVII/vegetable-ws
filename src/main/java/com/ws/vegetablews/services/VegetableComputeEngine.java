@@ -22,32 +22,37 @@ public class VegetableComputeEngine  implements Compute{
     private final FetchVegetablePrices fetchVegetablePrices;
     private final SearchVegetablePrice searchVegetablePrice;
     private final DeleteVegetablePrice deleteVegetablePrice;
+    private final CalVegetableCost calVegetableCost;
 
     @Autowired
-    public VegetableComputeEngine(LogsMgr logsMgr, AddVegetablePrice vegetablePrice, UpdateVegetablePrice updateVegetablePrice, FetchVegetablePrices fetchVegetablePrices, SearchVegetablePrice searchVegetablePrice, DeleteVegetablePrice deleteVegetablePrice) {
+    public VegetableComputeEngine(LogsMgr logsMgr, AddVegetablePrice vegetablePrice, UpdateVegetablePrice updateVegetablePrice, FetchVegetablePrices fetchVegetablePrices, SearchVegetablePrice searchVegetablePrice, DeleteVegetablePrice deleteVegetablePrice, CalVegetableCost calVegetableCost) {
         this.logsMgr = logsMgr;
         this.vegetablePrice = vegetablePrice;
         this.updateVegetablePrice = updateVegetablePrice;
         this.fetchVegetablePrices = fetchVegetablePrices;
         this.searchVegetablePrice = searchVegetablePrice;
         this.deleteVegetablePrice = deleteVegetablePrice;
+        this.calVegetableCost = calVegetableCost;
     }
 
     @Override
-    public RequestResponse excuteTask(String trackingId, String taskType, Vegetable vegetable, String vegetableId) {
+    public RequestResponse excuteTask(String trackingId, String taskType, TaskRequest taskRequest, String vegetableId) {
         RequestResponse requestResponse = new RequestResponse(GlobalVariables.ERROR_CODE_500, GlobalVariables.ERROR);
         try{
             if(taskType != null){
                 taskType = taskType.toUpperCase();
                 switch (taskType){
                     case GlobalVariables.ADD_VEG_TASK:
-                        requestResponse = vegetablePrice.execute(trackingId, vegetable, null);
+                        requestResponse = vegetablePrice.execute(trackingId, taskRequest, null);
                         break;
                     case GlobalVariables.UPDATE_VEG_TASK:
-                        requestResponse = updateVegetablePrice.execute(trackingId, vegetable, vegetableId);
+                        requestResponse = updateVegetablePrice.execute(trackingId, taskRequest, vegetableId);
                         break;
                     case GlobalVariables.DELETE_VEG_TASK:
                         requestResponse = deleteVegetablePrice.execute(trackingId, null, vegetableId);
+                        break;
+                    case GlobalVariables.CALC_VEG_COST_TASK:
+                        requestResponse = calVegetableCost.execute(trackingId, taskRequest, vegetableId);
                         break;
                         default:
                             requestResponse.setMessage(GlobalVariables.TASK_ERROR);

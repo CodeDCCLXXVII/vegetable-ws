@@ -4,6 +4,7 @@ package com.ws.vegetablews.Controllers;
 import com.ws.vegetablews.config.Config;
 import com.ws.vegetablews.config.GlobalVariables;
 import com.ws.vegetablews.dblayer.Vegetable;
+import com.ws.vegetablews.services.TaskRequest;
 import com.ws.vegetablews.services.VegetableComputeEngine;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +48,7 @@ public class VegetableController {
 
     @ApiOperation(value = "Add a new Vegetable", response = Vegetable.class)
     @PostMapping(value = "/addVegetable")
-    public Object addVegetable(@Valid @RequestBody Vegetable vegetable, BindingResult bindingResult){
+    public Object addVegetable(@Valid @RequestBody TaskRequest vegetable, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return sharedDataControllers.getErrors(bindingResult.getAllErrors());
         return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.ADD_VEG_TASK, vegetable, null);
@@ -56,15 +57,25 @@ public class VegetableController {
     @ApiOperation(value = "Update an existing Vegetable", response = Vegetable.class)
     @PutMapping(value = "/updateVegetable/{vegetableId}")
     public Object updateVegetable(@Valid @NotNull(message = "VegetableId is required")  @PathVariable String vegetableId,
-                                 @Valid @RequestBody Vegetable vegetable, BindingResult bindingResult){
+                                 @Valid @RequestBody TaskRequest taskRequest, BindingResult bindingResult){
         if(bindingResult.hasErrors())
             return sharedDataControllers.getErrors(bindingResult.getAllErrors());
-        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.UPDATE_VEG_TASK, vegetable, vegetableId);
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.UPDATE_VEG_TASK, taskRequest, vegetableId);
     }
 
     @ApiOperation(value = "Delete an existing Vegetable", response = Vegetable.class)
     @DeleteMapping(value = "/deleteVegetable/{vegetableId}")
     public Object deleteVegetable(@Valid @NotNull(message = "VegetableId is required") @PathVariable String vegetableId){
         return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.DELETE_VEG_TASK, null, vegetableId);
+    }
+
+
+    @ApiOperation(value = "Calculate Vegetable cost", response = Vegetable.class)
+    @PutMapping(value = "/calcVegetableCost/{vegetableId}")
+    public Object calcVegetableCost(@Valid @NotNull(message = "VegetableId is required")  @PathVariable String vegetableId,
+                                  @Valid @RequestBody TaskRequest taskRequest, BindingResult bindingResult){
+        if(bindingResult.hasErrors())
+            return sharedDataControllers.getErrors(bindingResult.getAllErrors());
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.CALC_VEG_COST_TASK, taskRequest, vegetableId);
     }
 }

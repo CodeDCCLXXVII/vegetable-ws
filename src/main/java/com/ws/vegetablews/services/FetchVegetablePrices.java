@@ -2,6 +2,7 @@ package com.ws.vegetablews.services;
 
 import com.ws.vegetablews.config.GlobalVariables;
 import com.ws.vegetablews.config.LogsMgr;
+import com.ws.vegetablews.dblayer.TransactionAO;
 import com.ws.vegetablews.dblayer.Vegetable;
 import com.ws.vegetablews.dblayer.VegetableAO;
 import org.springframework.data.domain.Page;
@@ -10,12 +11,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class FetchVegetablePrices extends SharedDataService implements Task {
 
-    public FetchVegetablePrices(LogsMgr logsMgr, VegetableAO vegetableAO) {
-        super(logsMgr, vegetableAO);
+    public FetchVegetablePrices(LogsMgr logsMgr, VegetableAO vegetableAO, TransactionAO transactionAO) {
+        super(logsMgr, vegetableAO, transactionAO);
     }
 
     @Override
-    public RequestResponse execute(String trackingId, Vegetable vegetable, String vegetableId) {
+    public RequestResponse execute(String trackingId, TaskRequest taskRequest, String vegetableId) {
         return null;
     }
 
