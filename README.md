@@ -6,12 +6,12 @@ vegetable server service
 
 # Vegetable-ws
 Add Vegetable
-The application contains the vegetable name, price, quantity and a transction ID that is applied as an unique identifier.
+The application contains the vegetable name, price, and a vegetable ID that is applied as an unique identifier.
 ![Apis Overall](https://github.com/CodeDCCLXXVII/vegetable-ws/blob/master/add_veg_api.png)
 
-# Add Vegetable
-The application contains the vegetable name, price, quantity and a transction ID that is applied as an unique identifier.
-![Apis Overall](https://github.com/CodeDCCLXXVII/vegetable-ws/blob/master/add_veg_api.png)
+# Read available Vegetable
+Fetches the avaiable vegetables in the database
+![Apis Overall](https://github.com/CodeDCCLXXVII/vegetable-ws/blob/master/read_veg_api.png)
 
 # Update Vegetable
 The application handles the update transaction, mainly referencing the vegetable name and price. 
@@ -22,7 +22,7 @@ The application handles the delete transaction and issues a message for confirma
 ![Apis Overall](https://github.com/CodeDCCLXXVII/vegetable-ws/blob/master/delete_veg.png)
 
 # Vegetable Cost
-The application identifies the transaction id (the vegetable that is required ) then calculates the sub cost based on the cost price and quantity.
+The application identifies the vegetable id (the vegetable that is required ) then calculates the sub cost based on the cost price and quantity.
 ![Apis Overall](https://github.com/CodeDCCLXXVII/vegetable-ws/blob/master/calc_veg_cost_api.png)
 
 # Total Cost
