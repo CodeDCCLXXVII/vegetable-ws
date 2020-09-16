@@ -6,10 +6,10 @@ public class TaskRequest {
 
     private String id;
     @NotNull
-    private String name;
+    private String vegName;
     @NotNull
-    private int price;
-    private float quantity;
+    private int vegPrice;
+    private float vegQuantity;
     private String transactionId;
 
     public String getId() {
@@ -20,28 +20,28 @@ public class TaskRequest {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getVegName() {
+        return vegName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setVegName(String vegName) {
+        this.vegName = vegName;
     }
 
-    public int getPrice() {
-        return price;
+    public int getVegPrice() {
+        return vegPrice;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
+    public void setVegPrice(int vegPrice) {
+        this.vegPrice = vegPrice;
     }
 
-    public float getQuantity() {
-        return quantity;
+    public float getVegQuantity() {
+        return vegQuantity;
     }
 
-    public void setQuantity(float quantity) {
-        this.quantity = quantity;
+    public void setVegQuantity(float vegQuantity) {
+        this.vegQuantity = vegQuantity;
     }
 
     public String getTransactionId() {
@@ -56,9 +56,9 @@ public class TaskRequest {
     public String toString() {
         return "TaskRequest{" +
                 "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", quantity='" + quantity + '\'' +
+                ", vegName='" + vegName + '\'' +
+                ", vegPrice=" + vegPrice +
+                ", vegQuantity='" + vegQuantity + '\'' +
                 ", transactionId='" + transactionId + '\'' +
                 '}';
     }

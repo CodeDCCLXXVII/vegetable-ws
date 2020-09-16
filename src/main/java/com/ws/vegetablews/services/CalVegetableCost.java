@@ -38,8 +38,8 @@ public class CalVegetableCost extends SharedDataService implements Task {
 
                 if(transaction != null) {
                     VegetableTrans vegetableTrans = new VegetableTrans(vegetable.getName(), vegetable.getPrice(),
-                            taskRequest.getQuantity(),
-                            round((vegetable.getPrice() * taskRequest.getQuantity()), 2));
+                            taskRequest.getVegQuantity(),
+                            round((vegetable.getPrice() * taskRequest.getVegQuantity()), 2));
                     if (transaction.getVegtableTransList() != null)
                         transaction.getVegtableTransList().add(vegetableTrans);
                     else {

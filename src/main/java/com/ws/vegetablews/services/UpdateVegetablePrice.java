@@ -25,8 +25,8 @@ public class UpdateVegetablePrice extends SharedDataService implements Task {
             Optional<Vegetable> vegetableOptional = vegetableAO.getVegetableByID(vegetableId);
             if(vegetableOptional.isPresent()){
                 Vegetable updateVegetable = vegetableOptional.get();
-                updateVegetable.setName(taskRequest.getName());
-                updateVegetable.setPrice(taskRequest.getPrice());
+                updateVegetable.setName(taskRequest.getVegName());
+                updateVegetable.setPrice(taskRequest.getVegPrice());
                 updateVegetable.setLastUpdate(getDateFromLocalDateTimeNow());
 
                 List<Vegetable> checkVegetables = vegetableAO.getVegetablesList(updateVegetable.getName());

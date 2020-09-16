@@ -20,7 +20,7 @@ public class AddVegetablePrice extends SharedDataService implements Task {
     public RequestResponse execute(String trackingId, TaskRequest taskRequest, String vegetableId) {
         RequestResponse requestResponse = new RequestResponse(GlobalVariables.ERROR_CODE_500, GlobalVariables.ERROR);
         try {
-            Vegetable newVegetable = new Vegetable(taskRequest.getName(), taskRequest.getPrice());
+            Vegetable newVegetable = new Vegetable(taskRequest.getVegName(), taskRequest.getVegPrice());
             newVegetable.setCreated(getDateFromLocalDateTimeNow());
             newVegetable.setLastUpdate(getDateFromLocalDateTimeNow());
 
