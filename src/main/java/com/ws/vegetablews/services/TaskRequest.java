@@ -58,7 +58,7 @@ public class TaskRequest {
                 "id='" + id + '\'' +
                 ", vegName='" + vegName + '\'' +
                 ", vegPrice=" + vegPrice +
-                ", vegQuantity='" + vegQuantity + '\'' +
+                ", vegQuantity=" + vegQuantity +
                 ", transactionId='" + transactionId + '\'' +
                 '}';
     }

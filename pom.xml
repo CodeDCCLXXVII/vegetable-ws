@@ -11,7 +11,7 @@
 	<groupId>com.ws</groupId>
 	<artifactId>vegetable-ws</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<vegName>vegetable-ws</vegName>
+	<name>vegetable-ws</name>
 	<description>Vegetable web service</description>
 
 	<properties>
