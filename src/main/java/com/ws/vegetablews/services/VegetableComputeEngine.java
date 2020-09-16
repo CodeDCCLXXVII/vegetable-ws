@@ -2,7 +2,6 @@ package com.ws.vegetablews.services;
 
 import com.ws.vegetablews.config.GlobalVariables;
 import com.ws.vegetablews.config.LogsMgr;
-import com.ws.vegetablews.dblayer.Vegetable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,9 +22,10 @@ public class VegetableComputeEngine  implements Compute{
     private final SearchVegetablePrice searchVegetablePrice;
     private final DeleteVegetablePrice deleteVegetablePrice;
     private final CalVegetableCost calVegetableCost;
+    private final CalculateCost calculateCost;
 
     @Autowired
-    public VegetableComputeEngine(LogsMgr logsMgr, AddVegetablePrice vegetablePrice, UpdateVegetablePrice updateVegetablePrice, FetchVegetablePrices fetchVegetablePrices, SearchVegetablePrice searchVegetablePrice, DeleteVegetablePrice deleteVegetablePrice, CalVegetableCost calVegetableCost) {
+    public VegetableComputeEngine(LogsMgr logsMgr, AddVegetablePrice vegetablePrice, UpdateVegetablePrice updateVegetablePrice, FetchVegetablePrices fetchVegetablePrices, SearchVegetablePrice searchVegetablePrice, DeleteVegetablePrice deleteVegetablePrice, CalVegetableCost calVegetableCost, CalculateCost calculateCost) {
         this.logsMgr = logsMgr;
         this.vegetablePrice = vegetablePrice;
         this.updateVegetablePrice = updateVegetablePrice;
@@ -33,6 +33,7 @@ public class VegetableComputeEngine  implements Compute{
         this.searchVegetablePrice = searchVegetablePrice;
         this.deleteVegetablePrice = deleteVegetablePrice;
         this.calVegetableCost = calVegetableCost;
+        this.calculateCost = calculateCost;
     }
 
     @Override
@@ -53,6 +54,9 @@ public class VegetableComputeEngine  implements Compute{
                         break;
                     case GlobalVariables.CALC_VEG_COST_TASK:
                         requestResponse = calVegetableCost.execute(trackingId, taskRequest, vegetableId);
+                        break;
+                    case GlobalVariables.CALC_TOTAL_COST_TASK:
+                        requestResponse = calculateCost.execute(trackingId, taskRequest, vegetableId);
                         break;
                         default:
                             requestResponse.setMessage(GlobalVariables.TASK_ERROR);

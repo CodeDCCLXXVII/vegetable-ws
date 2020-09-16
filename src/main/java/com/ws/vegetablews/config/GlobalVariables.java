@@ -39,6 +39,7 @@ public class GlobalVariables {
     public static final String UPDATE_VEG_TASK="UPDATE_VEG";
     public static final String DELETE_VEG_TASK="DELETE_VEG";
     public static final String CALC_VEG_COST_TASK="VEG_COST";
+    public static final String CALC_TOTAL_COST_TASK="VEG_TOTAL_COST";
     public static final String GET_LIST_VEG_TASK="GET_VEG_LIST";
     public static final String SEARCH_VEG_TASK="SEARCH_VEG";
     public static final String TASK_ERROR="Task unknown";

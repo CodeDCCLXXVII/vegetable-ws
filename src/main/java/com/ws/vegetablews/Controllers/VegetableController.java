@@ -69,7 +69,6 @@ public class VegetableController {
         return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.DELETE_VEG_TASK, null, vegetableId);
     }
 
-
     @ApiOperation(value = "Calculate Vegetable cost", response = Vegetable.class)
     @PutMapping(value = "/calcVegetableCost/{vegetableId}")
     public Object calcVegetableCost(@Valid @NotNull(message = "VegetableId is required")  @PathVariable String vegetableId,
@@ -77,5 +76,11 @@ public class VegetableController {
         if(bindingResult.hasErrors())
             return sharedDataControllers.getErrors(bindingResult.getAllErrors());
         return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.CALC_VEG_COST_TASK, taskRequest, vegetableId);
+    }
+
+    @ApiOperation(value = "Calculate total transaction cost", response = Vegetable.class)
+    @GetMapping(value = "/calcTotalTransactionCost/{transactionId}")
+    public Object calcTotalTransactionCost(@Valid @NotNull(message = "Transaction Id is required")  @PathVariable String transactionId){
+        return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.CALC_TOTAL_COST_TASK, null, transactionId);
     }
 }
