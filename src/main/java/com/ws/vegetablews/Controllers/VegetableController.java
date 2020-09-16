@@ -3,7 +3,9 @@ package com.ws.vegetablews.Controllers;
 
 import com.ws.vegetablews.config.Config;
 import com.ws.vegetablews.config.GlobalVariables;
+import com.ws.vegetablews.dblayer.Transaction;
 import com.ws.vegetablews.dblayer.Vegetable;
+import com.ws.vegetablews.services.RequestResponse;
 import com.ws.vegetablews.services.TaskRequest;
 import com.ws.vegetablews.services.VegetableComputeEngine;
 import io.swagger.annotations.ApiOperation;
@@ -63,13 +65,13 @@ public class VegetableController {
         return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.UPDATE_VEG_TASK, taskRequest, vegetableId);
     }
 
-    @ApiOperation(value = "Delete an existing Vegetable", response = Vegetable.class)
+    @ApiOperation(value = "Delete an existing Vegetable", response = RequestResponse.class)
     @DeleteMapping(value = "/deleteVegetable/{vegetableId}")
     public Object deleteVegetable(@Valid @NotNull(message = "VegetableId is required") @PathVariable String vegetableId){
         return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.DELETE_VEG_TASK, null, vegetableId);
     }
 
-    @ApiOperation(value = "Calculate Vegetable cost", response = Vegetable.class)
+    @ApiOperation(value = "Calculate Vegetable cost", response = Transaction.class)
     @PutMapping(value = "/calcVegetableCost/{vegetableId}")
     public Object calcVegetableCost(@Valid @NotNull(message = "VegetableId is required")  @PathVariable String vegetableId,
                                   @Valid @RequestBody TaskRequest taskRequest, BindingResult bindingResult){
@@ -78,7 +80,7 @@ public class VegetableController {
         return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.CALC_VEG_COST_TASK, taskRequest, vegetableId);
     }
 
-    @ApiOperation(value = "Calculate total transaction cost", response = Vegetable.class)
+    @ApiOperation(value = "Calculate total transaction cost", response = Transaction.class)
     @GetMapping(value = "/calcTotalTransactionCost/{transactionId}")
     public Object calcTotalTransactionCost(@Valid @NotNull(message = "Transaction Id is required")  @PathVariable String transactionId){
         return vegetableComputeEngine.excuteTask(new Config().getTracking(), GlobalVariables.CALC_TOTAL_COST_TASK, null, transactionId);
